@@ -18,7 +18,7 @@ var ctx context.Context
 func GetConnection(testing bool) {
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
 	if err != nil {
-		log.Error("Failed to create MongoDB client: %v", err)
+		log.Error("Failed to create MongoDB client: ", err)
 	}
 
 	Database = client.Database("SebruPomo")
@@ -29,12 +29,12 @@ func GetConnection(testing bool) {
 
 	err = client.Connect(ctx)
 	if err != nil {
-		log.Error("Failed to create MongoDB client: %v", err)
+		log.Error("Failed to create MongoDB client: ", err)
 	}
 
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		log.Error("Failed to create MongoDB client: %v", err)
+		log.Error("Failed to create MongoDB client: ", err)
 	}
 
 	if testing {
