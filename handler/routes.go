@@ -17,7 +17,7 @@ func Register(api *echo.Group) {
 	profileGroup.POST("", SignUp)
 	profileGroup.POST("/login", Login)
 
-	profileRestrictedGroup := api.Group("/profile")
+	profileRestrictedGroup := api.Group("/me")
 	profileRestrictedGroup.Use(jwt.JwtMiddlware)
 	profileRestrictedGroup.GET("/whoAmI", WhoAmI)
 }

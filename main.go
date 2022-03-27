@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	db.GetConnection()
+	db.GetConnection(false)
 
 	e := echo.New()
 	e.Validator = &handler.CustomValidator{Validator: validator.New()}

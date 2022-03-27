@@ -71,7 +71,7 @@ func Login(c echo.Context) (err error) {
 	})
 }
 
-func WhoAmI(c echo.Context) (err error) {
+func WhoAmI(c echo.Context) error {
 	user, err := jwt.GetJwtUser(c)
 	if err != nil {
 		return c.JSON(http.StatusForbidden, model.AccessError())
