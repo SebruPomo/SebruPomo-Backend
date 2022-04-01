@@ -35,6 +35,11 @@ func getTestWithAuth(method string, query string, body string, auth string) (ech
 	return setupEnvironment().NewContext(req, rec), rec
 }
 
+func getTestWithAutoAuth(method string, query string, body string) (echo.Context, *httptest.ResponseRecorder) {
+	token, _ := getToken()
+	return getTestWithAuth(method, query, body, token)
+}
+
 func getTest(method string, query string, body string) (echo.Context, *httptest.ResponseRecorder) {
 	return getTestWithAuth(method, query, body, "")
 }
@@ -52,6 +57,7 @@ func createUser() *model.User {
 		Username: "John Doe",
 		Email:    "test@web.de",
 		Hash:     "test123",
+		Tasks:    []model.Task{},
 	}
 
 	db.CreateUser(user)
@@ -59,6 +65,16 @@ func createUser() *model.User {
 	return user
 }
 
+func getUser() *model.User {
+	setupDatabase()
+
+	user, err := db.FindUserByUsername("John Doe")
+	if err != nil {
+		return createUser()
+	}
+	return user
+}
+
 func getToken() (string, error) {
-	return jwt.GenerateToken(createUser())
+	return jwt.GenerateToken(getUser())
 }

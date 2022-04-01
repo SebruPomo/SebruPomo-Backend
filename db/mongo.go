@@ -52,6 +52,11 @@ func CreateUser(user *model.User) (*model.User, error) {
 	return user, err
 }
 
+func UpdateUser(user *model.User) (*model.User, error) {
+	_, err := Database.Collection("users").ReplaceOne(ctx, bson.D{{Key: "_id", Value: user.ID}}, user)
+	return user, err
+}
+
 func ExistsUserByEmail(email string) bool {
 	err := Database.Collection("users").FindOne(ctx, bson.D{{Key: "email", Value: email}}).Decode(new(bson.M))
 	return err == nil

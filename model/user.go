@@ -9,4 +9,12 @@ type User struct {
 	Username string             `json:"username"`
 	Email    string             `json:"email"`
 	Hash     string             `json:"-"`
+	Tasks    []Task             `json:"tasks"`
+}
+
+type Task struct {
+	ID          string `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	SubTasks    []Task `json:"subTasks"`
 }

@@ -15,9 +15,12 @@ type userSignUpRequest struct {
 	Hash     string `json:"hash" validate:"required"`
 }
 
-func SignUp(c echo.Context) (err error) {
+func SignUp(c echo.Context) error {
 	u := new(userSignUpRequest)
-	if err = (&Context{c}).BindValidate(u); err != nil {
+	if err := (&Context{c}).BindValidate(u); err != nil {
+		if err.Error() == "Key: 'userSignUpRequest.Email' Error:Field validation for 'Email' failed on the 'email' tag" {
+			return c.JSON(http.StatusBadRequest, model.InputError("Ungültige Email Adresse.", "Email"))
+		}
 		return c.JSON(http.StatusBadRequest, model.ProcessError())
 	}
 
@@ -33,6 +36,7 @@ func SignUp(c echo.Context) (err error) {
 		Username: u.Username,
 		Email:    u.Email,
 		Hash:     u.Hash,
+		Tasks:    []model.Task{},
 	})
 
 	if err != nil {
@@ -47,9 +51,9 @@ type userLoginRequest struct {
 	Hash     string `query:"hash" validate:"required"`
 }
 
-func Login(c echo.Context) (err error) {
+func Login(c echo.Context) error {
 	u := new(userLoginRequest)
-	if err = (&Context{c}).BindValidateParams(u); err != nil {
+	if err := (&Context{c}).BindValidateParams(u); err != nil {
 		return c.JSON(http.StatusBadRequest, model.ProcessError())
 	}
 

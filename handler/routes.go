@@ -20,6 +20,9 @@ func Register(api *echo.Group) {
 	profileRestrictedGroup := api.Group("/me")
 	profileRestrictedGroup.Use(jwt.JwtMiddlware)
 	profileRestrictedGroup.GET("/whoAmI", WhoAmI)
+	profileRestrictedGroup.POST("/task", CreateTask)
+	profileRestrictedGroup.POST("/task/:path", CreateTask)
+	profileRestrictedGroup.DELETE("/task/:path", RemoveTask)
 }
 
 func (cv *CustomValidator) Validate(i interface{}) error {
